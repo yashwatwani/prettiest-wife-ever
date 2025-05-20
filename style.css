@@ -1,0 +1,114 @@
+/* style.css */
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
+    font-family: 'Arial', sans-serif;
+    /* Improve rendering performance hint for animations */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    will-change: transform, opacity; /* Hint to browser about animated properties */
+}
+
+#photo-collage-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.photo-item {
+    position: absolute;
+    object-fit: cover;
+    border-radius: 6px; /* Slightly smaller radius */
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.2); /* Slightly smaller shadow */
+    border: 2px solid white;
+    opacity: 0;
+    transform: scale(0.75) rotate(0deg); /* Start slightly larger for quicker perceived growth */
+
+    /* --- FASTER ANIMATION: Drastically reduce transition duration --- */
+    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+                transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* Was 0.7s. Using a cubic-bezier for a snappier feel.
+       Try 0.3s, 0.4s, 0.5s
+    */
+    will-change: transform, opacity; /* Hint for individual items */
+}
+
+.photo-item.visible {
+    opacity: 1;
+    transform: scale(1) rotate(var(--rotation-deg, 0deg));
+}
+
+.focus-text-container {
+    position: fixed;
+    top: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    text-align: center;
+    pointer-events: none;
+    width: 90%;
+}
+
+#sparkling-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    color: #fff;
+    text-shadow:
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 15px #fff,
+        0 0 20px #ff00de,
+        0 0 30px #ff00de,
+        0 0 40px #ff00de,
+        0 0 55px #ff00de,
+        0 0 75px #ff00de;
+    animation: sparkle 2s infinite alternate;
+    margin: 0;
+    /* Performance hint for text that animates/changes */
+    will-change: text-shadow;
+}
+
+@keyframes sparkle {
+    0% {
+        text-shadow:
+            0 0 5px #fff,
+            0 0 10px #fff,
+            0 0 15px #fce4ec,
+            0 0 20px #f06292,
+            0 0 30px #f06292,
+            0 0 40px #e91e63,
+            0 0 55px #e91e63,
+            0 0 75px #c2185b;
+    }
+    100% {
+        text-shadow:
+            0 0 3px #fff,
+            0 0 7px #fff,
+            0 0 10px #f8bbd0,
+            0 0 15px #f48fb1,
+            0 0 20px #f48fb1,
+            0 0 25px #ec407a,
+            0 0 30px #ec407a,
+            0 0 35px #d81b60;
+    }
+}
+
+@media (max-width: 768px) {
+    #sparkling-text {
+        font-size: clamp(2rem, 9vw, 4.5rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .focus-text-container {
+        top: 3vh;
+    }
+    #sparkling-text {
+        font-size: clamp(1.8rem, 11vw, 4rem);
+    }
+}
